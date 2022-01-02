@@ -32,47 +32,40 @@ import static java.lang.Math.max;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] testArray = {{-2, 5, 0, -5, -2, 2, -3},
+        int[][] testArray1 = {
+                {-2, 5, 0, -5, -2, 2, -3},
                 {4, -3, -1, 3, 2, 1, -1},
                 {-5, 6, 3, -5, -1, -4, -2},
                 {-1, -1, 3, -1, 4, 1, 1},
                 {3, -3, 2, 0, 3, -3, -2},
                 {-2, 1, -2, 1, 1, 3, -1},
-                {2, -4, 0, 1, 0, -3, -1}};
-        System.out.println("The bentleyMax: " + bentleyMax(testArray) + "\n");
+                {2, -4, 0, 1, 0, -3, -1}
+        };
+        int[][] testArray2 = {
+                { -5, -6, 3, 1, 0 },
+                { 9, 7, 8, 3, 7 },
+                { -6, -2, -1, 2, -4 },
+                { -7, 5, 5, 2, -6 },
+                { 3, 2, 9, -5, 1 }
+        };
+
+        System.out.println("The bentleyMax: " + bentleyMax(testArray1) + "\n");
     }
 
     public static int bentleyMax(int[][] matrix) {
         int colCount = matrix[0].length;
-        int[] rowS = new int[matrix.length];
-        int currMax = 0;
-        int leftMax, rightMax;
+        int[] rowSums = new int[matrix.length];
+        int maxSum = 0;
 
-        int i, j;
-        for(i = 0; i < colCount; i++) {
-            for(j = i; j < colCount; j++){
-                rowS = rowSum(matrix, i, j);
-                currMax = max(currMax, kadaneMax(rowS));
+        int leftBound, rightBound;
+        for(leftBound = 0; leftBound < colCount; leftBound++) {
+            for(rightBound = leftBound; rightBound < colCount; rightBound++){
+                rowSums = rowSum(matrix, leftBound, rightBound);
+                maxSum = max(maxSum, kadaneMax(rowSums));
             }
         }
 
-        return currMax;
-    }
-
-    public static int[] rowSum(int[][] matrix, int leftBound, int rightBound) {
-        int rowCount = matrix.length;
-        int colCount = rightBound - leftBound;
-        int[] sumOfRow = new int[rowCount];
-
-        int i, j;
-        for(i = 0; i < rowCount; i++) {
-            sumOfRow[i] = 0;
-            for(j = 0; j < colCount; j++) {
-                sumOfRow[i] += matrix[i][j];
-            }
-        }
-
-        return sumOfRow;
+        return maxSum;
     }
 
     public static int kadaneMax(int[] arr) {
@@ -101,5 +94,24 @@ public class Main {
         }
 
         return maxSum;
+    }
+
+    /*
+    0 <= leftBound < colCount
+    leftBound <= rightBound < colCount
+     */
+    public static int[] rowSum(int[][] matrix, int leftBound, int rightBound) {
+        int rowCount = matrix.length;
+        int[] sumOfRow = new int[rowCount];
+
+        int i, j;
+        for(i = 0; i < rowCount; i++) {
+            sumOfRow[i] = 0;
+            for(j = leftBound; j <= rightBound; j++) {
+                sumOfRow[i] += matrix[i][j];
+            }
+        }
+
+        return sumOfRow;
     }
 }
