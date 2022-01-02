@@ -4,8 +4,8 @@
     
 <h3> Group 8:
     <ul>
-     <li> Duygu Kaya <li>
-     <li> Murat Ertaş <li>
-     <li> Turab Karakaş <li>
-     <li> Uzay Karadağ <li>
+     <li> Duygu Kaya 
+     <li> Murat Ertaş 
+     <li> Turab Karakaş 
+     <li> Uzay Karadağ 
     <ul>
