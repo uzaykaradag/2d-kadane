@@ -3,8 +3,9 @@
 <h3> Instructor: Assoc. Prof. İzzet Göksel <h3>
     
 <h3> Group 8:
-     <ul> Duygu Kaya <ul>
-     <ul> Murat Ertaş <ul>
-     <ul> Turab Karakaş <ul>
-     <ul> Uzay Karadağ <ul>
-
+    <ul>
+     <li> Duygu Kaya <li>
+     <li> Murat Ertaş <li>
+     <li> Turab Karakaş <li>
+     <li> Uzay Karadağ <li>
+    <ul>
