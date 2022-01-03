@@ -1,38 +1,9 @@
-/*
-Coffee shop -> Poll
-Do you drink coffee? Yes (1) or No (-1)
-
-Matrix
-Maximum Sum Submatrix
-Kadane's Algorithm (Dynamic) -> Bentley's Algorithm
-Left Bound, Right Bound -> RowSum
-Apply Kadane's Algo to RowSum Array
-
-Kadane's Algo:
- max(MaxSum[i-1] + a[i], a[i])
-         0  1 2  3  4 5 6  7
- arr = {-2 -3 4 -1 -2 1 5 -3}
- OPT(0) = -2
- OPT(1) = max(-3, -3 + -2)  = -3
- OPT(2) = max(4, 4 + -3) = 4
- OPT(3) = max(-1, -1 + 4) = 3
- OPT(4) = max(-2, 3 + -2) = 1
- OPT(5) = max(1, 1 + 1) = 2
- OPT(6) = max(5, 2 + 5) = 7
- OPT(7) = max(-3, 7 + -3) = 4
-
-maxSumEndingHere = [
- */
-
-
-
-import static java.lang.Math.max;
-
+import java.util.HashMap;
 
 public class Main {
 
     public static void main(String[] args) {
-        int[][] testArray1 = {
+        int[][] testMatrix1 = {
                 {-2, 5, 0, -5, -2, 2, -3},
                 {4, -3, -1, 3, 2, 1, -1},
                 {-5, 6, 3, -5, -1, -4, -2},
@@ -41,7 +12,7 @@ public class Main {
                 {-2, 1, -2, 1, 1, 3, -1},
                 {2, -4, 0, 1, 0, -3, -1}
         };
-        int[][] testArray2 = {
+        int[][] testMatrix2 = {
                 { -5, -6, 3, 1, 0 },
                 { 9, 7, 8, 3, 7 },
                 { -6, -2, -1, 2, -4 },
@@ -49,26 +20,67 @@ public class Main {
                 { 3, 2, 9, -5, 1 }
         };
 
-        System.out.println("The bentleyMax: " + bentleyMax(testArray1) + "\n");
+        printBentley(testMatrix1);
+        printBentley(testMatrix2);
     }
 
-    public static int bentleyMax(int[][] matrix) {
+    /*
+    This method is an implementation of Bentley's algorithm for finding the maximum sum sub-matrix.
+
+    Returns a HashMap containing 5 key-value pairs:
+        -("max", int) denoting the maximum sum that can be found by
+        calculating the element-wise sum of any possible contiguous(rectangle) sub-matrix of the initial matrix.
+        -("up", int) denoting the uppermost index of the sub-matrix.
+        -("down", int) denoting the down-most index of the sub-matrix.
+        -("right", int) denoting the rightmost index of the sub-matrix.
+        -("left", int) denoting the leftmost index of the sub-matrix.
+
+    This method uses the rowSum and kadaneMax methods.
+     */
+    public static HashMap<String, Integer> bentleyMax(int[][] matrix) {
         int colCount = matrix[0].length;
-        int[] rowSums = new int[matrix.length];
+        int[] rowSums;
         int maxSum = 0;
+        int right = -1, left = -1, up = -1, down = -1;
 
         int leftBound, rightBound;
+        HashMap<String, Integer> kadaneRes;
         for(leftBound = 0; leftBound < colCount; leftBound++) {
             for(rightBound = leftBound; rightBound < colCount; rightBound++){
                 rowSums = rowSum(matrix, leftBound, rightBound);
-                maxSum = max(maxSum, kadaneMax(rowSums));
+                kadaneRes = kadaneMax(rowSums);
+
+                if(kadaneRes.get("max") > maxSum) {
+                    maxSum = kadaneRes.get("max");
+                    up = kadaneRes.get("start");
+                    down = kadaneRes.get("end");
+                    left = leftBound;
+                    right = rightBound;
+                }
+
             }
         }
 
-        return maxSum;
+        HashMap<String, Integer> res = new HashMap<>();
+        res.put("up", up);
+        res.put("down", down);
+        res.put("left", left);
+        res.put("right", right);
+        res.put("max", maxSum);
+
+        return res;
     }
 
-    public static int kadaneMax(int[] arr) {
+    /*
+    This method is an implementation of Kadane's algorithm to find maximum sum contiguous sub-array.
+
+    Returns a HashMap containing 3 key-value pairs:
+        -("max", int) denoting the maximum sum that can be found by
+         calculating the element-wise sum of any possible contiguous sub-array of the initial array.
+        -("start", int) starting index of the resultant sub-array.
+        -("end", int) ending index of the resultant sub-array.
+    */
+    public static HashMap<String, Integer> kadaneMax(int[] arr) {
         int size = arr.length;
         int[] OPT = new int[size]; //OPT
         int maxSum;
@@ -93,12 +105,21 @@ public class Main {
             }
         }
 
-        return maxSum;
+        HashMap<String, Integer> res = new HashMap<>();
+        res.put("start", start);
+        res.put("end", end);
+        res.put("max", maxSum);
+
+        return res;
     }
 
     /*
-    0 <= leftBound < colCount
-    leftBound <= rightBound < colCount
+    This method is a helper method designed to help the bentleyMax method.
+
+    Returns an array with the row-wise sum of a matrix' rows at the corresponding elements.
+
+    leftBound and rightBound parameters are used to bound the columns included in the row-wise sum.
+    leftBound and rightBound indexes themselves are both included in the row-wise sum results. (inclusive!)
      */
     public static int[] rowSum(int[][] matrix, int leftBound, int rightBound) {
         int rowCount = matrix.length;
@@ -113,5 +134,29 @@ public class Main {
         }
 
         return sumOfRow;
+    }
+
+    /*
+    This method is designed as a formatter method to print the results of bentleyMax.
+     */
+    public static void printBentley(int[][] matrix) {
+        System.out.println("=========================================================");
+        HashMap<String, Integer> result = bentleyMax(matrix);
+        System.out.println("The maximum sum possible is: " + result.get("max"));
+        System.out.println("The sub-matrix: \n");
+        printMatrix(matrix, result.get("up"), result.get("down"), result.get("left"), result.get("right"));
+        System.out.println("=========================================================");
+    }
+    /*
+    This method is designed as a helper method for printBentley.
+     */
+    public static void printMatrix(int[][] matrix, int boundUp, int boundDown, int boundLeft, int boundRight) {
+        for(int i = boundUp; i <= boundDown; i++) {
+            for(int j = boundLeft; j <= boundRight; j++) {
+                System.out.printf("%3d", matrix[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
