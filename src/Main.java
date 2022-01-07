@@ -6,6 +6,8 @@ public class Main {
     public static void main(String[] args) {
         int[][] pollResults = generatePollResults(10, 10);
 
+        System.out.println("============================================================");
+        System.out.println("The poll results: (In terms tolls of the given area)");
         printMatrix(pollResults, 0, pollResults.length-1, 0, pollResults[0].length-1);
 
         printBentley(pollResults);
@@ -15,13 +17,11 @@ public class Main {
 
         Coordinate result = Coordinate.findOptimalPointCoordinates(pollResults, upperRightITU, lowerLeftITU);
         System.out.println("The coordinates to open the shop for maximum customers according to polls; ");
-        System.out.println("Latitude: " + result.latitude);
-        System.out.println("Longitude: " + result.longitude);
+        System.out.println(result.latitude + ", " + result.longitude);
     }
 
     public static int[][] generatePollResults(int rowCount, int colCount) {
         Random rand = new Random();
-
 
         int[][] pollResults = new int[rowCount][colCount];
         int i, j;
@@ -163,7 +163,7 @@ public class Main {
     public static void printMatrix(int[][] matrix, int boundUp, int boundDown, int boundLeft, int boundRight) {
         for(int i = boundUp; i <= boundDown; i++) {
             for(int j = boundLeft; j <= boundRight; j++) {
-                System.out.printf("%3d", matrix[i][j]);
+                System.out.printf("%5d", matrix[i][j]);
             }
             System.out.println();
         }
