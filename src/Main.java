@@ -1,27 +1,37 @@
+import java.util.Random;
 import java.util.HashMap;
 
 public class Main {
 
     public static void main(String[] args) {
-        int[][] testMatrix1 = {
-                {-2, 5, 0, -5, -2, 2, -3},
-                {4, -3, -1, 3, 2, 1, -1},
-                {-5, 6, 3, -5, -1, -4, -2},
-                {-1, -1, 3, -1, 4, 1, 1},
-                {3, -3, 2, 0, 3, -3, -2},
-                {-2, 1, -2, 1, 1, 3, -1},
-                {2, -4, 0, 1, 0, -3, -1}
-        };
-        int[][] testMatrix2 = {
-                { -5, -6, 3, 1, 0 },
-                { 9, 7, 8, 3, 7 },
-                { -6, -2, -1, 2, -4 },
-                { -7, 5, 5, 2, -6 },
-                { 3, 2, 9, -5, 1 }
-        };
+        int[][] pollResults = generatePollResults(10, 10);
 
-        printBentley(testMatrix1);
-        printBentley(testMatrix2);
+        System.out.println("============================================================");
+        System.out.println("The poll results: (In terms tolls of the given area)");
+        printMatrix(pollResults, 0, pollResults.length-1, 0, pollResults[0].length-1);
+
+        printBentley(pollResults);
+
+        Coordinate lowerLeftITU = new Coordinate(41.099686,29.015362);
+        Coordinate upperRightITU = new Coordinate(41.110912,29.036613);
+
+        Coordinate result = Coordinate.findOptimalPointCoordinates(pollResults, upperRightITU, lowerLeftITU);
+        System.out.println("The coordinates to open the shop for maximum customers according to polls; ");
+        System.out.println(result.latitude + ", " + result.longitude);
+    }
+
+    public static int[][] generatePollResults(int rowCount, int colCount) {
+        Random rand = new Random();
+
+        int[][] pollResults = new int[rowCount][colCount];
+        int i, j;
+        for(i  = 0; i < rowCount; i++) {
+            for(j = 0; j < colCount; j++) {
+                pollResults[i][j] = (rand.nextInt() % 100);
+            }
+        }
+
+        return pollResults;
     }
 
     /*
@@ -153,7 +163,7 @@ public class Main {
     public static void printMatrix(int[][] matrix, int boundUp, int boundDown, int boundLeft, int boundRight) {
         for(int i = boundUp; i <= boundDown; i++) {
             for(int j = boundLeft; j <= boundRight; j++) {
-                System.out.printf("%3d", matrix[i][j]);
+                System.out.printf("%5d", matrix[i][j]);
             }
             System.out.println();
         }
