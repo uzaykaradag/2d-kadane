@@ -1,13 +1,3 @@
-/*
-lower left: 41.099686,29.015362
-upright: 41.110912,29.036613
-1st Iteration:
-Latitude: 41.1041764
-Longitude: 29.0302377
-
-
- */
-
 import java.util.Random;
 import java.util.HashMap;
 
