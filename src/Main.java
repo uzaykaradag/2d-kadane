@@ -4,7 +4,10 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] pollResults = generatePollResults(10, 10);
+        int[][] pollResults = new int[][]{{60, 44, -41, 1},
+                {60, -69, 97, -1},
+                {0, -27, 34, 6},
+                {-58, -5, -62, 96}};
 
         System.out.println("============================================================");
         System.out.println("The poll results: (In terms tolls of the given area)");
