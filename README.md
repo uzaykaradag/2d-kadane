@@ -1,11 +1,2 @@
-<h1> MAT333E; Data Proccesing Algorithms <h1>
-<h2> Term Project: Implementation of Bentley's Algorithm, Optimal Place for Cafe <h2>
-<h3> Instructor: Assoc. Prof. İzzet Göksel <h3>
-    
-<h3> Group 8:
-    <ul>
-     <li> Duygu Kaya 
-     <li> Murat Ertaş 
-     <li> Turab Karakaş 
-     <li> Uzay Karadağ 
-    <ul>
+# Dynamic Programming, Maximize Profits For Cafe
+This project was done as a group project for my Algorithms class but I was the sole coder. The abstract idea is that we use a 2-dimensional implementation of Kadane's algorithm to find the optimal parcel on the campus to open a cafe according to poll results from students as to would they frequent a cafe in the given parcel. So basically poll result matrix -> the center of the maximum sum sub-matrix.
